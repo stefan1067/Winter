@@ -1,32 +1,32 @@
+import machine
 from machine import Pin
 import time
-from smbus import SMBus
-#import smbus
+from machine import I2C
+
+#from smbus import SMBus
+#prova
+#
 # Setup
 green = Pin("PC5", Pin.OUT)
 red = Pin("PB0", Pin.OUT)
 
-i2cbus = SMBus(1) #creo un nuovo collegamento i2c
-sda = Pin("PB7",Pin.OUT)	#serial data
-scl=Pin("PB6",Pin.OUT)	#serial clock
+i2c = machine.I2C(scl=machine.Pin("PB6"), sda=machine.Pin("PB7"))   #inizializzazione accesso a I2C
+i2c .scan ()	#Scansione della scheda
+address =0x5D # quando pad SA0 collegato a tensione di alimentazione
+addressTerra=0x5C #quando pad SA0 collegato a terra
+sda=machine.Pin("PB7")
+#nbyte=numero di byte da leggere
+data = bytearray(2)
+i2c.readfrom_mem_into(address, sda, data)
+#La funzione readfrom_mem restituirà una stringa di byte con i dati recuperati dal dispositivo e successivamente esecuzionde del print
 
-#adress device
 # Loop
 while True:
-	#portb = i2cbus.read_byte_data(adress device, sda)  # Read the value of Port sda
-	#print(sda)
+	print("prova")
+	green.value(1)
 	red.value(0)
 	green.value(1)
 	time.sleep(1)
 	green.value(0)
 	red.value(1)
 	time.sleep(1)
-
-#prova con libreria SMBus2
-#from smbus2 import SMBus
-
-# Open i2c bus 1 and read one byte from address 80, offset 0
-#bus = SMBus(1)
-#b = bus.read_byte_data(80, 0)
-#print(b)
-#bus.close()
